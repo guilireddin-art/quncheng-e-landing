@@ -101,7 +101,7 @@
                 <div class="field"><label for="name">真實姓名 *</label><input id="name" required autocomplete="name" enterkeyhint="next" placeholder="例：陳先生"></div>
                 <div class="field"><label for="age">目前年齡 *</label><input id="age" required type="number" min="18" max="65" inputmode="numeric" enterkeyhint="next" placeholder="限18-65歲"></div>
                 <div class="field"><label for="city">現居縣市 *</label><select id="city" required autocomplete="address-level1"><option value="">請選擇居住地</option><option>台北市</option><option>新北市</option><option>桃園市</option><option>台中市</option><option>台南市</option><option>高雄市</option><option>基隆市</option><option>新竹市</option><option>新竹縣</option><option>苗栗縣</option><option>彰化縣</option><option>南投縣</option><option>雲林縣</option><option>嘉義市</option><option>嘉義縣</option><option>屏東縣</option><option>宜蘭縣</option><option>花蓮縣</option><option>台東縣</option><option>澎湖縣</option><option>金門縣</option><option>連江縣</option></select></div>
-                <div class="field"><label for="id-number">身分證字號 *</label><input id="id-number" required maxlength="10" inputmode="text" autocomplete="off" enterkeyhint="next" autocapitalize="characters" placeholder="例：A123456789"><div class="hint">資料僅用於申請確認與安全處理</div></div>
+                <div class="field"><label for="id-number">身分證字號 *</label><input id="id-number" required inputmode="text" autocomplete="off" enterkeyhint="next" placeholder="例：A123456789"><div class="hint">資料僅用於申請確認與安全處理</div></div>
                 <div class="field"><label for="phone">手機號碼 *</label><input id="phone" required type="tel" inputmode="tel" autocomplete="tel" enterkeyhint="next" placeholder="請輸入手機號碼"></div>
                 <div class="field"><label for="line-id">常用 LINE ID *</label><input id="line-id" required autocomplete="off" enterkeyhint="done" placeholder="請輸入您的LINE ID"><div class="hint">專員將優先透過LINE與您聯繫</div></div>
               </div>
@@ -170,7 +170,7 @@
     $('#lead-form').addEventListener('focusout',()=>setTimeout(()=>{if(!$('#lead-form').contains(document.activeElement))document.body.classList.remove('form-active')},80));
     const mobileFields=[...$('#lead-form').querySelectorAll('input,select')];
     mobileFields.forEach((field,index)=>{
-      field.addEventListener('input',()=>{field.closest('.field').classList.remove('invalid');$('#form-error').classList.remove('show');if(field.id==='id-number')field.value=field.value.toUpperCase()});
+      field.addEventListener('input',()=>{field.closest('.field').classList.remove('invalid');$('#form-error').classList.remove('show')});
       field.addEventListener('change',()=>{field.closest('.field').classList.remove('invalid');$('#form-error').classList.remove('show')});
       field.addEventListener('keydown',event=>{if(event.key==='Enter'&&index<mobileFields.length-1){event.preventDefault();mobileFields[index+1].focus()}});
     });
