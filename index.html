@@ -196,7 +196,15 @@
       const payload={id,page_id:config.id||null,page_slug:window.PAGE_SLUG||'main',name:$('#name').value.trim(),age,city:$('#city').value,id_number:$('#id-number').value.trim(),phone:$('#phone').value.trim(),line_id:$('#line-id').value.trim(),q1_existing_loan:answers.q1,q2_bank_status:answers.q2,q3_amount_needed:answers.q3,q4_foreign_currency_account:answers.q4,source_url:location.href,traffic_source:window.TRAFFIC_SOURCE||null,user_agent:navigator.userAgent,status:'new',line_clicked:false};
       try{const response=await submitLead(payload);if(!response.ok)throw new Error(await response.text());window.__lastLeadId=id;document.body.classList.remove('form-active');document.body.classList.add('success-mode');$('#success').style.display='block';$('#line-button').focus();window.trackPageEvent?.('CompleteRegistration',{content_name:'C-E額度評估',status:'submitted'});window.trackTikTokEvent?.('SubmitForm',{content_type:'loan_application'})}catch(err){console.warn(err);formError.textContent='資料暫時無法送出，請稍後再試。';formError.classList.add('show');button.disabled=false;button.textContent='送出評估資料'}
     });
-    $('#line-button').addEventListener('click',()=>{if(!window.__lastLeadId)return;const key='sb_publishable_6aY1-VEvimuV1K4FzURO2Q_inVt-ZKL';fetch('https://ijzywhrnhvldkjdwfdyy.supabase.co/rest/v1/rpc/mark_line_clicked',{method:'POST',headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({lead_id:window.__lastLeadId})}).catch(()=>{})});
+    let lineClickSent=false;
+    function markLineClicked(){
+      if(!window.__lastLeadId||lineClickSent)return;
+      lineClickSent=true;
+      const key='sb_publishable_6aY1-VEvimuV1K4FzURO2Q_inVt-ZKL';
+      fetch('https://ijzywhrnhvldkjdwfdyy.supabase.co/rest/v1/rpc/mark_line_clicked',{method:'POST',keepalive:true,headers:{apikey:key,Authorization:'Bearer '+key,'Content-Type':'application/json'},body:JSON.stringify({lead_id:window.__lastLeadId})}).catch(()=>{lineClickSent=false});
+    }
+    $('#line-button').addEventListener('pointerdown',markLineClicked,{passive:true});
+    $('#line-button').addEventListener('click',markLineClicked);
   </script>
 </body>
 </html>
